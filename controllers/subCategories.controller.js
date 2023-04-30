@@ -67,11 +67,15 @@ const subCategoriesController = {
       }
 
       const [subDeleteCategory] = subCategories.splice(subCategoryIndex, 1)
+      const filteredProducts = read("products").filter(item => item.sub_category_id != subCategoryId)
+      
 
+      write('products', filteredProducts)
       write('subCategories', subCategories)
 
       res.json(204, { status: 204, message: "subCategory delete" })
     } catch (error) {
+      
       res.json(400, { status: 400, message: error.message })
     }
   },

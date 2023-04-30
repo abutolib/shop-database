@@ -24,18 +24,25 @@ function filteredArray(array1, array2, id, name, objectId, objectName, objectArr
       array2.
         filter(subItem =>
           item[id] == subItem[id]))
-
-  mapArray.forEach((item, index) => {
-    let counter = index + 1
-    let itemName = array1.find(item => item[id] == counter)[name]
+  // console.log(mapArray.length);
+  // return mapArray
+  mapArray.forEach((item, index, array) => {
+    let counter = array1[index][id]
+    // console.log("\ncounter")
+    // console.log("id =>>>" +id );
+    // console.log(counter)
+    // console.log("\n\n\n\n\n")
+    let itemName = array1.find(item => item[id] == counter)?.[name]
     const newObject = {}
     newObject[objectId] = item[0]?.[id] || counter
     newObject[objectName] = array1.filter(subItem => subItem[id] == item[0]?.[id])[0]?.[name] || itemName
     newObject[objectArray] = item.filter(item => delete item[id])
-    counter--
+    console.log(newObject);
     resArray.push(newObject)
+    // console.log(array);
   })
 }
+
 
 module.exports = {
   read, write, hashPassword, filteredArray

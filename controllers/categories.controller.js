@@ -61,7 +61,11 @@ const categoriesController = {
       }
 
       const [deleteCategory] = categories.splice(categoryIndex, 1)
-
+      const filteredArray = read("subCategories").filter(item => item.category_id != categoryId)
+      const filteredArray2 = filteredArray.map(item => read("products").filter(subItem => item.sub_category_id == subItem.sub_category_id)).flat()
+      console.log(filteredArray2);
+      write('products', filteredArray2)
+      write('subCategories', filteredArray)
       write('categories', categories)
       res.json(204, { status: 204, message: "category delete" })
     } catch (error) {
