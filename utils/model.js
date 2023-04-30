@@ -24,14 +24,8 @@ function filteredArray(array1, array2, id, name, objectId, objectName, objectArr
       array2.
         filter(subItem =>
           item[id] == subItem[id]))
-  // console.log(mapArray.length);
-  // return mapArray
   mapArray.forEach((item, index, array) => {
     let counter = array1[index][id]
-    // console.log("\ncounter")
-    // console.log("id =>>>" +id );
-    // console.log(counter)
-    // console.log("\n\n\n\n\n")
     let itemName = array1.find(item => item[id] == counter)?.[name]
     const newObject = {}
     newObject[objectId] = item[0]?.[id] || counter
@@ -39,7 +33,6 @@ function filteredArray(array1, array2, id, name, objectId, objectName, objectArr
     newObject[objectArray] = item.filter(item => delete item[id])
     console.log(newObject);
     resArray.push(newObject)
-    // console.log(array);
   })
 }
 
