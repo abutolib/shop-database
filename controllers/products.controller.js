@@ -1,37 +1,52 @@
 const { read, write } = require('../utils/model')
 const productsController = {
   GET: (req, res) => {
-    let filteredProducts = []
-    const subCategories = read('subCategories')
-    const products = read('products')
+    try {
+      let filteredProducts = []
+      const subCategories = read('subCategories')
+      const products = read('products')
 
-    const { categoryId, subCategoryId, model } = req.query
+      const { categoryId, subCategoryId, model } = req.query
+      if (categoryId > read("categories").length) {
+        throw new Error("this category not found")
+      }
+      if (subCategoryId > read("subCategories").length) {
+        throw new Error("this subCategory not found")
+      }
+      if (categoryId && subCategoryId == undefined && model == undefined) {
+        const findSubCategoryId = subCategories.filter(item => item.category_id == categoryId)
 
-    if (categoryId && subCategoryId == undefined && model == undefined) {
-      const findSubCategoryId = subCategories.filter(item => item.category_id == categoryId)
+        filteredProducts = findSubCategoryId.map(
+          item =>
+            products
+              .filter(
+                product => product.sub_category_id == item.sub_category_id))
+        filteredProducts = filteredProducts.flat(2)
+      }
+      if (categoryId == undefined && subCategoryId && model == undefined) {
+        filteredProducts = products.filter(product => product.sub_category_id == subCategoryId)
+      }
+      if (categoryId == undefined && subCategoryId && model) {
+        filteredProducts = products.filter(product => product.sub_category_id == subCategoryId && product.model == model)
+        if (filteredProducts.length == 0) {
+          throw new Error("this model not found")
+        }
+      }
+      if (categoryId == undefined && subCategoryId == undefined && model) {
+        filteredProducts = products.filter(product => product.model == model)
+        if (filteredProducts.length == 0) {
+          throw new Error("this model not found")
+        }
+      }
+      if (categoryId && subCategoryId == undefined && model) {
+        const findedItem = subCategories.find(item => item.category_id == categoryId).sub_category_id
+        filteredProducts = products.filter(product => product.sub_category_id = findedItem && product.model == model)
+      }
 
-      filteredProducts = findSubCategoryId.map(
-        item =>
-          products
-            .filter(
-              product => product.sub_category_id == item.sub_category_id))
-      filteredProducts=filteredProducts.flat(2)
+      res.json(200, filteredProducts)
+    } catch (error) {
+      res.json(400, { status: 400, message: error.message })
     }
-    if (categoryId == undefined && subCategoryId && model == undefined) {
-      filteredProducts = products.filter(product => product.sub_category_id == subCategoryId)
-    }
-    if (categoryId == undefined && subCategoryId && model) {
-      filteredProducts = products.filter(product => product.sub_category_id == subCategoryId && product.model == model)
-    }
-    if (categoryId == undefined && subCategoryId == undefined && model) {
-      filteredProducts = products.filter(product => product.model == model)
-    }
-    if (categoryId && subCategoryId == undefined && model) {
-      const findedItem = subCategories.find(item => item.category_id == categoryId).sub_category_id
-      filteredProducts = products.filter(product => product.sub_category_id = findedItem && product.model == model)
-    }
-
-    res.json(200, filteredProducts)
   },
   POST: async (req, res) => {
     try {
@@ -105,19 +120,30 @@ const productsController = {
 module.exports = productsController
 
 //POST
-
-// {
-//   "subCategoryId": 6,
-//   "model": "kitob",
-//   "productName": "kitob2",
-//   "color": "black",
-//   "price": "500"
-// }
+/*
+{
+  "subCategoryId": 6,
+  "model": "kitob",
+  "productName": "kitob2",
+  "color": "black",
+  "price": "500"
+}
+*/
 
 //PUT
+/*
+{
+  "productId": 9,
+  "productName": "kitob3",
+  "price": "500"
+}
+*/
 
-// {
-//   "productId": 9,
-//   "productName": "kitob3",
-//   "price": "500"
-// }
+//DELETE
+
+/*
+{
+  "productId":14
+}
+*/
+

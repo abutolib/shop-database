@@ -5,7 +5,7 @@ const categoriesController = {
     const categories = read('categories')
     const subCategories = read('subCategories')
 
-    filteredArray(categories, subCategories, "category_id", 'category_name', "categoryId", "categoryName","subCategories",resArray)
+    filteredArray(categories, subCategories, "category_id", 'category_name', "categoryId", "categoryName", "subCategories", resArray)
 
     res.json(200, resArray)
   },
@@ -77,29 +77,29 @@ const categoriesController = {
 
 module.exports = categoriesController
 
-/*
 
-[
-  [
-    {
-      sub_category_id: 1,
-      category_id: 1,
-      sub_category_name: 'smart phones'
-    },
-    {
-      sub_category_id: 2,
-      category_id: 1,
-      sub_category_name: 'televisions'
-    },
-    {
-      sub_category_id: 3,
-      category_id: 1,
-      sub_category_name: 'laptops'
-    }
-  ],
-  [
-    { sub_category_id: 4, category_id: 2, sub_category_name: 'boots' },
-    { sub_category_id: 5, category_id: 2, sub_category_name: 'shirts' }
-  ]
-]
+//POST
+
+/*
+{
+    "categoryName":"apteka"
+}
+*/
+
+
+//PUT
+
+/*
+{
+    "categoryId":4,
+    "categoryName":"apteka"
+}
+*/
+
+//DELETE
+
+/*
+{
+    "categoryId":4
+}
 */

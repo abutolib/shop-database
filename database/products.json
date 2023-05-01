@@ -102,5 +102,13 @@
         "product_name": "Ikki eshik orasi",
         "color": "black",
         "price": "500"
+    },
+    {
+        "product_id": 14,
+        "sub_category_id": 9,
+        "model": "Shayana farm",
+        "product_name": "Mukaltin",
+        "color": "black",
+        "price": "500"
     }
 ]
